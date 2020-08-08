@@ -1,4 +1,4 @@
-import { Request, Response, response } from 'express';
+import { Request, Response } from 'express';
 import db from '../database/connection';
 import convertHourToMinutes from '../utils/convertHourToMinutes';
 
@@ -18,8 +18,10 @@ export default class ClassesController {
     const subject = filters.subject as string;
     const time = filters.time as string;
 
+    console.log(filters);
+
     if (!week_day || !subject || !time) {
-      return response.status(400).json({
+      return resp.status(400).json({
         error: "Missing filters to seach classes"
       })
     }
@@ -38,7 +40,7 @@ export default class ClassesController {
       .where('classes.subject', '=', subject)
       .join('users', 'classes.user_id', '=', 'users.id')
       .select(['classes.*', 'users.*']);
-
+    console.log(classes);
     return resp.json(classes);
   }
 
